@@ -19,6 +19,7 @@
 
 package Demo.codelets.behaviors;
 
+import Demo.memory.CreatureInnerSense;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
@@ -36,8 +37,12 @@ import org.json.JSONObject;
 
 public class Forage extends Codelet {
     
-        private Memory knownMO;
-        private List<Long> known;
+        private Memory knownApplesMO;
+		private Memory knownJewelsMO;
+		private Memory innerSenseMO;
+		private CreatureInnerSense cis;
+        private List<Long> knownApples;
+		private List<Long> knownJewels;
         private MemoryContainer legsMO;
 
 
@@ -50,8 +55,11 @@ public class Forage extends Codelet {
 
 	@Override
 	public void proc() {
-            known = (List<Long>) knownMO.getI();
-            if (known.size() == 0) {
+            knownApples = (List<Long>) knownApplesMO.getI();
+			knownJewels = (List<Long>) knownJewelsMO.getI();
+
+
+            if ((knownApples.isEmpty() && cis.fuel < 300) || (knownJewels.isEmpty() && cis.fuel > 300)) {
 		JSONObject message=new JSONObject();
 			try {
 				message.put("ACTION", "FORAGE");
@@ -70,8 +78,12 @@ public class Forage extends Codelet {
 
 	@Override
 	public void accessMemoryObjects() {
-            knownMO = (MemoryObject)this.getInput("KNOWN_APPLES");
-            legsMO = (MemoryContainer)this.getOutput("LEGS");
+        knownApplesMO = this.getInput("KNOWN_APPLES");
+		knownJewelsMO = this.getInput("KNOWN_JEWELS");
+		innerSenseMO = this.getInput("INNER");
+        legsMO = (MemoryContainer)this.getOutput("LEGS");
+
+		cis = (CreatureInnerSense) innerSenseMO.getI();
 	}
         
         @Override

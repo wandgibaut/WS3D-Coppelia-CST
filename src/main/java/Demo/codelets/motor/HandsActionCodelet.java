@@ -71,10 +71,15 @@ public class HandsActionCodelet extends Codelet{
                             creature.eatIt(food);	
                             log.info("Sending Eat It command to agent");
                         }
+                        else if(command.equals("SACKIT")){
+                            Thing jewel = (Thing) action.get(1);
+                            creature.sackIt(jewel);
+                            log.info("Sending Sack It command to agent");
+                        }
 
                     }
                     //System.out.println("OK_hands");
-                    List<Object> previousAction = (List<Object>) handsMO.getI();
+                    //List<Object> previousAction = (List<Object>) handsMO.getI();
                     previousHandsCommand = (String) action.get(0);
                 }
 	}//end proc

@@ -23,7 +23,7 @@ public class Environment {
     
     public WS3DCoppelia world;
     public Agent creature;
-    private ResourceGenerator rg;
+    public ResourceGenerator rg;
     
     public Environment(){
         world = new WS3DCoppelia(4,4);

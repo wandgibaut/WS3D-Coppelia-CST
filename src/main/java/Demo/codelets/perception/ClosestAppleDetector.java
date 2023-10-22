@@ -64,7 +64,7 @@ public class ClosestAppleDetector extends Codelet {
                 known = Collections.synchronizedList((List<Thing>) knownMO.getI());
                 CreatureInnerSense cis = (CreatureInnerSense) innerSenseMO.getI();
                 synchronized(known) {
-		   if(known.size() != 0){
+		   if(!known.isEmpty()){
 			//Iterate over objects in vision, looking for the closest apple
                         CopyOnWriteArrayList<Thing> myknown = new CopyOnWriteArrayList<>(known);
                         for (Thing t : myknown) {
@@ -92,13 +92,15 @@ public class ClosestAppleDetector extends Codelet {
 				
 			}else{
 				//couldn't find any nearby apples
-                                closest_apple = null;
-                                closestAppleMO.setI(closest_apple);
+                                //closest_apple = null;
+                                //closestAppleMO.setI(closest_apple);
+                                closestAppleMO.setI(null);
 			}
 		   }
                    else  { // if there are no known apples closest_apple must be null
-                        closest_apple = null;
-                        closestAppleMO.setI(closest_apple);
+                        //closest_apple = null;
+                        //closestAppleMO.setI(closest_apple);
+                        closestAppleMO.setI(null);
 		   }
                 }
 	}//end proc

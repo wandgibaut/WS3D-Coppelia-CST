@@ -24,26 +24,27 @@ import WS3DCoppelia.model.Thing;
 import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryObject;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Detect apples in the vision field.
- * 	This class detects a number of things related to apples, such as if there are any within reach,
+ * Detect jewels in the vision field.
+ * 	This class detects a number of things related to jewels, such as if there are any within reach,
  * any on sight, if they are rotten, and so on.
  * 
- * @author klaus
+ * @author wander
  *
  */
-public class AppleDetector extends Codelet {
+public class JewelDetector extends Codelet {
 
         private Memory visionMO;
-        private Memory knownApplesMO;
+        private Memory knownJewelsMO;
 
-	public AppleDetector(){
-            this.name = "AppleDetector";
+	public JewelDetector(){
+            this.name = "JewelDetector";
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class AppleDetector extends Codelet {
                 synchronized(this) {
 		    this.visionMO=(MemoryObject)this.getInput("VISION");
                 }
-		this.knownApplesMO=(MemoryObject)this.getOutput("KNOWN_APPLES");
+		this.knownJewelsMO=(MemoryObject)this.getOutput("KNOWN_JEWELS");
 	}
 
 	@Override
@@ -61,13 +62,13 @@ public class AppleDetector extends Codelet {
             synchronized (visionMO) {
                //vision = Collections.synchronizedList((List<Thing>) visionMO.getI());
                vision = new CopyOnWriteArrayList((List<Identifiable>) visionMO.getI());
-               known = Collections.synchronizedList((List<Thing>) knownApplesMO.getI());
-               //known = new CopyOnWriteArrayList((List<Thing>) knownApplesMO.getI());    
+               known = Collections.synchronizedList((List<Thing>) knownJewelsMO.getI());
+               //known = new CopyOnWriteArrayList((List<Thing>) knownJewelsMO.getI());    
                synchronized(vision) {
                  for (Identifiable obj : vision) {
                      if (obj instanceof Thing) {
                          Thing t = (Thing) obj;
-                         if (t.isFood()) {
+                         if (t.isJewel()) {
                              boolean found = false;
                              synchronized (known) {
                                  CopyOnWriteArrayList<Thing> myknown = new CopyOnWriteArrayList<>(known);

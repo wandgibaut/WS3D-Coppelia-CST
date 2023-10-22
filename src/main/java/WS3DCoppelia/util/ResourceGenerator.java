@@ -57,7 +57,7 @@ public class ResourceGenerator extends Thread {
                 //perishable
                 generateFood(FoodTypes.PFOOD);
                 //non-perishable
-                generateFood(FoodTypes.NPFOOD);
+                //generateFood(FoodTypes.NPFOOD);
                 }
                 ///generate jewels
                 if(createJewel){

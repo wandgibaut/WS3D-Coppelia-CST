@@ -110,7 +110,14 @@ public class Agent extends Identifiable {
                 lInfo.add(l.isDelivered() ? 1 : 0);
                 lInfo.add(l.getPayment());
                 leafletInfo.add(lInfo);
+
+                if (l.isCompleted()){
+                    this.deliver(l.getId());
+                }
             }
+
+
+
             List<Object> response = (List<Object>) sim.callScriptFunction("status", agentScript, score, leafletInfo, color.hls());
             pos = (List<Float>) response.get(0);
             ori = (List<Float>) response.get(1);
@@ -397,6 +404,21 @@ public class Agent extends Identifiable {
         } else {
             System.out.println("Not completed");
         }
+        /*boolean all_delivered = true;
+        for(Leaflet leaflet : this.leaflets){
+            if (!leaflet.isDelivered()) {
+                all_delivered = false;
+                break;
+            }
+        }
+        if (all_delivered){
+            this.generateNewLeaflets();
+        }*/
+
+        //if (Arrays.stream(this.leaflets).allMatch(Leaflet::isDelivered)){
+        //    this.generateNewLeaflets();
+        //}
+
     }
 
     public float getFuel() {
