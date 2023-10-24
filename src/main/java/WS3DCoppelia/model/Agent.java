@@ -111,8 +111,9 @@ public class Agent extends Identifiable {
                 lInfo.add(l.getPayment());
                 leafletInfo.add(lInfo);
 
-                if (l.isCompleted()){
+                if (l.isCompleted() && !l.isDelivered()){
                     this.deliver(l.getId());
+                    //l.setDelivered(true);
                 }
             }
 

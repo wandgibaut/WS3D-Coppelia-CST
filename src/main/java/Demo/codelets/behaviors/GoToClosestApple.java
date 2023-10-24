@@ -62,51 +62,56 @@ public class GoToClosestApple extends Codelet {
 		//If far, go towards it
 		//If close, stops
 
-                Thing closestApple = (Thing) closestAppleMO.getI();
-                CreatureInnerSense cis = (CreatureInnerSense) selfInfoMO.getI();
+		Thing closestApple = (Thing) closestAppleMO.getI();
+		CreatureInnerSense cis = (CreatureInnerSense) selfInfoMO.getI();
 
-		if(closestApple != null)
-		{
-			float appleX=0;
-			float appleY=0;
-			try {
-                                appleX = closestApple.getPos().get(0);
-                                appleY = closestApple.getPos().get(1);
+		if (cis.fuel < 300) {
+			if (closestApple != null) {
+				float appleX = 0;
+				float appleY = 0;
+				try {
+					appleX = closestApple.getPos().get(0);
+					appleY = closestApple.getPos().get(1);
 
-			} catch (Exception e) {
-				e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				float selfX = cis.position.get(0);
+				float selfY = cis.position.get(1);
+
+				double distance = calculateDistance((double) selfX, (double) selfY, (double) appleX, (double) appleY);
+				JSONObject message = new JSONObject();
+				try {
+					if (distance > reachDistance) { //Go to it
+						message.put("ACTION", "GOTO");
+						message.put("X", appleX);
+						message.put("Y", appleY);
+						message.put("SPEED", creatureBasicSpeed);
+						activation = 1.0;
+
+					} else {//Stop
+						message.put("ACTION", "GOTO");
+						message.put("X", appleX);
+						message.put("Y", appleY);
+						message.put("SPEED", 0.0);
+						activation = 0.5;
+					}
+					legsMO.setI(message.toString(), activation, name);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
 
-			float selfX=cis.position.get(0);
-			float selfY=cis.position.get(1);
-
-			double distance = calculateDistance((double)selfX, (double)selfY, (double)appleX, (double)appleY);
-			JSONObject message=new JSONObject();
-			try {
-				if(distance>reachDistance){ //Go to it
-                                        message.put("ACTION", "GOTO");
-					message.put("X", appleX);
-					message.put("Y", appleY);
-                                        message.put("SPEED", creatureBasicSpeed);
-                                        activation=1.0;
-
-				}else{//Stop
-					message.put("ACTION", "GOTO");
-					message.put("X", appleX);
-					message.put("Y", appleY);
-                                        message.put("SPEED", 0.0);
-                                        activation=0.5;
-				}
-				legsMO.setI(message.toString(),activation,name);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}	
+			else {
+				activation=0.0;
+				legsMO.setI("",activation,name);
+			}
 		}
-                else {
-                    activation=0.0;
-                    legsMO.setI("",activation,name);
-                }
-                
+		else {
+			activation=0.0;
+			legsMO.setI("",activation,name);
+		}
 	}//end proc
         
         @Override
